@@ -1,0 +1,111 @@
+[
+  {
+    "name": "quick-scan-bad-form",
+    "description": "Quick Scan should catch critical form accessibility issues",
+    "prompt": "Quick Scan this file for accessibility issues: evals/files/bad_form.html",
+    "assertions": [
+      { "type": "contains", "value": "CRITICAL", "description": "Flags critical issues" },
+      { "type": "contains", "value": "label", "description": "Catches missing form labels" },
+      { "type": "contains", "value": "placeholder", "description": "Identifies placeholder-only inputs" },
+      { "type": "contains_any", "values": ["keyboard", "onClick", "button"], "description": "Catches non-keyboard-accessible submit" },
+      { "type": "contains", "value": "Score:", "description": "Includes a score" },
+      { "type": "contains_any", "values": ["auto-fix", "Auto-fix", "fixable"], "description": "Offers auto-fix" },
+      { "type": "contains_any", "values": ["Who:", "who", "screen reader", "keyboard", "assistive"], "description": "Explains who is affected" },
+      { "type": "contains", "value": "Fix:", "description": "Includes fix suggestions" }
+    ]
+  },
+  {
+    "name": "full-audit-inaccessible-page",
+    "description": "Full Audit should produce comprehensive findings on a badly built page",
+    "prompt": "Full Audit this file for accessibility: evals/files/inaccessible_page.html",
+    "assertions": [
+      { "type": "contains", "value": "Non-Compliant", "description": "Page should be non-compliant" },
+      { "type": "contains_any", "values": ["lang", "3.1.1", "language"], "description": "Catches missing lang attribute" },
+      { "type": "contains_any", "values": ["alt", "1.1.1", "Non-text"], "description": "Catches missing alt text on images" },
+      { "type": "contains_any", "values": ["outline", "focus", "2.4.7"], "description": "Catches removed focus indicators" },
+      { "type": "contains_any", "values": ["heading", "h1", "h2", "h3", "2.4.6"], "description": "Catches heading hierarchy issues" },
+      { "type": "contains_any", "values": ["landmark", "nav", "main", "2.4.1"], "description": "Catches missing landmarks" },
+      { "type": "contains_any", "values": ["click here", "Read more", "2.4.4"], "description": "Catches vague link text" },
+      { "type": "contains_any", "values": ["contrast", "1.4.3", "4.5:1"], "description": "Catches contrast issues" },
+      { "type": "contains", "value": "Perceivable", "description": "Reports per-pillar scores" },
+      { "type": "contains", "value": "Operable", "description": "Reports Operable pillar" },
+      { "type": "contains", "value": "Understandable", "description": "Reports Understandable pillar" },
+      { "type": "contains", "value": "Robust", "description": "Reports Robust pillar" },
+      { "type": "contains", "value": "WCAG", "description": "References WCAG criteria" }
+    ]
+  },
+  {
+    "name": "component-check-modal",
+    "description": "Component Check should identify all modal pattern violations",
+    "prompt": "Component Check this React modal for accessibility: evals/files/bad_modal.jsx",
+    "assertions": [
+      { "type": "contains_any", "values": ["Modal", "Dialog", "dialog"], "description": "Identifies component as modal/dialog" },
+      { "type": "contains_any", "values": ["focus trap", "focus", "Tab"], "description": "Catches missing focus trap" },
+      { "type": "contains_any", "values": ["Escape", "escape", "ESC"], "description": "Catches missing escape handler" },
+      { "type": "contains_any", "values": ["role=\"dialog\"", "role=", "dialog", "<dialog>"], "description": "Catches missing dialog role" },
+      { "type": "contains_any", "values": ["aria-modal", "aria-labelledby", "ARIA"], "description": "Catches missing ARIA attributes" },
+      { "type": "contains_any", "values": ["focus return", "return focus", "trigger"], "description": "Catches missing focus return" },
+      { "type": "contains_any", "values": ["button", "<button>", "keyboard"], "description": "Catches div-as-button issue" },
+      { "type": "contains_any", "values": ["Keyboard", "keyboard"], "description": "Has keyboard interaction section" },
+      { "type": "contains", "value": "Fix:", "description": "Provides fix code" }
+    ]
+  },
+  {
+    "name": "component-check-good-tabs",
+    "description": "Component Check should recognize well-built accessible tabs",
+    "prompt": "Component Check this React tabs component for accessibility: evals/files/good_tabs.jsx",
+    "assertions": [
+      { "type": "contains_any", "values": ["Tab", "tab", "Tabs"], "description": "Identifies component as tabs" },
+      { "type": "contains_any", "values": ["passing", "Passing", "pass", "✅"], "description": "Shows passing checks" },
+      { "type": "not_contains", "value": "CRITICAL", "description": "No critical findings on a good component" },
+      { "type": "not_contains", "value": "HIGH", "description": "No high findings on a good component" },
+      { "type": "contains_any", "values": ["role=\"tablist\"", "tablist", "role=\"tab\""], "description": "Recognizes correct ARIA roles" },
+      { "type": "contains_any", "values": ["Arrow", "arrow", "keyboard"], "description": "Acknowledges keyboard support" },
+      { "type": "regex", "pattern": "([89]\\d|100)/([0-9]+)", "description": "Good component scores 80+ out of total checks" }
+    ]
+  },
+  {
+    "name": "component-check-dropdown",
+    "description": "Component Check should catch all issues in a non-accessible dropdown",
+    "prompt": "Component Check this React dropdown for accessibility: evals/files/custom_dropdown.jsx",
+    "assertions": [
+      { "type": "contains_any", "values": ["Dropdown", "Menu", "dropdown", "menu", "Listbox", "listbox", "combobox"], "description": "Identifies component type" },
+      { "type": "contains_any", "values": ["keyboard", "Keyboard", "Arrow", "Tab"], "description": "Catches missing keyboard support" },
+      { "type": "contains_any", "values": ["aria-expanded", "role", "ARIA"], "description": "Catches missing ARIA" },
+      { "type": "contains_any", "values": ["Escape", "escape"], "description": "Catches missing escape to close" },
+      { "type": "contains", "value": "CRITICAL", "description": "Flags critical keyboard access issues" },
+      { "type": "contains", "value": "Fix:", "description": "Provides fix suggestions" }
+    ]
+  },
+  {
+    "name": "quick-scan-who-affected",
+    "description": "Every finding should explain who is affected",
+    "prompt": "Quick Scan this file for accessibility issues: evals/files/bad_form.html",
+    "assertions": [
+      { "type": "contains_any", "values": ["screen reader", "Screen reader", "blind", "visually impaired"], "description": "Mentions screen reader users" },
+      { "type": "contains_any", "values": ["keyboard", "Keyboard", "motor", "mobility"], "description": "Mentions keyboard-only users" },
+      { "type": "contains_any", "values": ["Who:", "who is affected", "affects", "impact"], "description": "Has who-is-affected section" }
+    ]
+  },
+  {
+    "name": "full-audit-scoring",
+    "description": "Full Audit should produce correct scoring format",
+    "prompt": "Full Audit this file: evals/files/inaccessible_page.html",
+    "assertions": [
+      { "type": "contains", "value": "Score:", "description": "Has overall score" },
+      { "type": "regex", "pattern": "\\d+/100", "description": "Score is out of 100" },
+      { "type": "contains_any", "values": ["Perceivable", "Operable", "Understandable", "Robust"], "description": "Has pillar breakdown" },
+      { "type": "regex", "pattern": "\\d+/25", "description": "Pillar scores out of 25" },
+      { "type": "contains_any", "values": ["Non-Compliant", "Partial AA"], "description": "Has compliance level" }
+    ]
+  },
+  {
+    "name": "semantic-html-preference",
+    "description": "Fixes should prefer semantic HTML over ARIA",
+    "prompt": "Quick Scan this file and show fixes: evals/files/bad_modal.jsx",
+    "assertions": [
+      { "type": "contains_any", "values": ["<button", "button>", "semantic"], "description": "Suggests button element over div" },
+      { "type": "contains", "value": "Fix:", "description": "Has fix section" }
+    ]
+  }
+]

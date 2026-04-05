@@ -1,0 +1,64 @@
+# Curb Cut — Accessibility check on PRs
+# Scans changed frontend files for WCAG 2.2 AA violations
+# Uses Claude Sonnet for CI — faster and more cost-effective than Opus
+name: Accessibility Check
+
+on:
+  pull_request:
+    paths:
+      - '**/*.html'
+      - '**/*.jsx'
+      - '**/*.tsx'
+      - '**/*.vue'
+      - '**/*.svelte'
+
+jobs:
+  curb-cut:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed frontend files
+        id: files
+        run: |
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- '*.html' '*.jsx' '*.tsx' '*.vue' '*.svelte')
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Run Curb Cut
+        if: steps.files.outputs.files != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          echo "## ♿ Curb Cut — Accessibility Report" > results.md
+          echo "" >> results.md
+          echo "${{ steps.files.outputs.files }}" | while read file; do
+            if [ -f "$file" ]; then
+              echo "### $file" >> results.md
+              claude -p "Quick Scan this file for WCAG 2.2 AA accessibility issues. Be concise. $(cat "$file")" \
+                --model claude-sonnet-4-6 >> results.md
+              echo "" >> results.md
+              echo "---" >> results.md
+              echo "" >> results.md
+            fi
+          done
+
+      - name: Post results as PR comment
+        if: always() && steps.files.outputs.files != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            if (fs.existsSync('results.md')) {
+              const body = fs.readFileSync('results.md', 'utf8');
+              if (body.trim()) {
+                await github.rest.issues.createComment({
+                  ...context.repo,
+                  issue_number: context.issue.number,
+                  body: `<details>\n<summary>♿ Curb Cut — Accessibility Report</summary>\n\n${body}\n</details>`
+                });
+              }
+            }
