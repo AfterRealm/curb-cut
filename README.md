@@ -51,16 +51,17 @@ claude plugin add afterrealm/curb-cut
 
 ### Manual Install
 
+Curb Cut uses progressive disclosure — the skill is a router plus lazy-loaded mode files under `modes/`. Clone the repo directly into your skills directory:
+
 ```bash
-mkdir -p ~/.claude/skills/curb-cut
-curl -o ~/.claude/skills/curb-cut/SKILL.md \
-  https://raw.githubusercontent.com/AfterRealm/curb-cut/main/SKILL.md
+git clone https://github.com/AfterRealm/curb-cut.git ~/.claude/skills/curb-cut
 ```
 
-### Clone
+Or clone anywhere and symlink:
 
 ```bash
 git clone https://github.com/AfterRealm/curb-cut.git
+ln -s "$(pwd)/curb-cut" ~/.claude/skills/curb-cut
 ```
 
 ## CI/CD

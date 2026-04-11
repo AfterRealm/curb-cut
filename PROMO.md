@@ -66,10 +66,8 @@ Works with HTML, JSX, TSX, Vue, and Svelte. Knows that React uses `htmlFor`, not
 claude marketplace add AfterRealm/marketplace
 claude plugin add afterrealm/curb-cut
 
-# Or grab the skill directly
-mkdir -p ~/.claude/skills/curb-cut
-curl -o ~/.claude/skills/curb-cut/SKILL.md \
-  https://raw.githubusercontent.com/AfterRealm/curb-cut/main/SKILL.md
+# Or clone directly into your skills directory
+git clone https://github.com/AfterRealm/curb-cut.git ~/.claude/skills/curb-cut
 ```
 
 ## Why "Curb Cut"
