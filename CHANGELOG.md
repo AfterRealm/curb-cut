@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.1 — 2026-09-29
+
+### Fixed
+- The CI/CD workflow example pinned `--model claude-sonnet-4-6`, which is now two Sonnet generations old. It now uses the `sonnet` alias, which always resolves to the latest Sonnet, so the example stays current.
+
 ## v1.1.0 — 2026-04-11
 
 The biggest Curb Cut refactor yet. The monolithic `SKILL.md` has been split into a thin router and four lazy-loaded mode files, the description was systematically optimized against a 20-query eval set, and several quality issues from a pre-ship full-pass review were fixed.
